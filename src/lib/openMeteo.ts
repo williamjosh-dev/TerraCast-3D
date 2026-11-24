@@ -68,7 +68,6 @@ export async function fetchMonthlyClimate(
   latitude: number,
   longitude: number
 ): Promise<MonthlyClimate[]> {
-  // Fixed relative_humidity_2m_mean parameter name
   const apiUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=2025-01-01&end_date=2025-12-31&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,relative_humidity_2m_mean,wind_speed_10m_max&timezone=auto`;
   const response = await fetch(apiUrl);
   if (!response.ok) {
@@ -76,7 +75,9 @@ export async function fetchMonthlyClimate(
   }
   const data = await response.json();
   const dailyData = data.daily;
-
+  if (!dailyData) {
+    throw new Error("Daily climate data is not available.");
+  }
   const monthlyData: MonthlyClimate[] = Array.from({ length: 12 }, (_, i) => ({
     month: i + 1,
     average_temperature: 0,
