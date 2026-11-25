@@ -78,7 +78,7 @@ export async function fetchMonthlyClimate(
   if (!dailyData) {
     throw new Error("Daily climate data is not available.");
   }
-  const monthlyData: MonthlyClimate[] = Array.from({ length: 12 }, (_, i) => ({
+    const monthlyData: MonthlyClimate[] = Array.from({ length: 12 }, (_, i) => ({
     month: i + 1,
     average_temperature: 0,
     total_rainfall: 0,
@@ -86,8 +86,15 @@ export async function fetchMonthlyClimate(
     average_wind_speed: 0,
   }));
 
+  const dayCounts = new Array(12).fill(0);
+
   for (let i = 0; i < dailyData.time.length; i++) {
-    const monthIndex = new Date(dailyData.time[i]).getMonth();
+    // Parse "YYYY-MM-DD" safely without UTC timezone shift
+    const monthIndex = Number(dailyData.time[i].split("-")) - 1;
+    if (monthIndex < 0 || monthIndex > 11) continue;
+
+    dayCounts[monthIndex]++;
+
     const maxT = dailyData.temperature_2m_max[i] ?? 20;
     const minT = dailyData.temperature_2m_min[i] ?? 20;
 
@@ -98,11 +105,11 @@ export async function fetchMonthlyClimate(
   }
 
   for (let i = 0; i < 12; i++) {
-    const daysInMonth = new Date(2025, i + 1, 0).getDate();
-    monthlyData[i].average_temperature = Number((monthlyData[i].average_temperature / daysInMonth).toFixed(1));
+    const count = dayCounts[i] || 1;
+    monthlyData[i].average_temperature = Number((monthlyData[i].average_temperature / count).toFixed(1));
     monthlyData[i].total_rainfall = Number(monthlyData[i].total_rainfall.toFixed(1));
-    monthlyData[i].average_humidity = Math.round(monthlyData[i].average_humidity / daysInMonth);
-    monthlyData[i].average_wind_speed = Number((monthlyData[i].average_wind_speed / daysInMonth).toFixed(1));
+    monthlyData[i].average_humidity = Math.round(monthlyData[i].average_humidity / count);
+    monthlyData[i].average_wind_speed = Number((monthlyData[i].average_wind_speed / count).toFixed(1));
   }
 
   return monthlyData;
