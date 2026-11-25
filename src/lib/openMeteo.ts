@@ -90,7 +90,7 @@ export async function fetchMonthlyClimate(
 
   for (let i = 0; i < dailyData.time.length; i++) {
     // Parse "YYYY-MM-DD" safely without UTC timezone shift
-    const monthIndex = Number(dailyData.time[i].split("-")) - 1;
+    const monthIndex = Number(dailyData.time[i].split("-")[1]) - 1;
     if (monthIndex < 0 || monthIndex > 11) continue;
 
     dayCounts[monthIndex]++;
