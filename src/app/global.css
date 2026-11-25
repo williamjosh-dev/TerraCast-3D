@@ -1,0 +1,74 @@
+/* Spatial Glass Panel with subtle top specular highlight */
+.spatial-glass {
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.78) 0%,
+    rgba(2, 6, 23, 0.88) 100%
+  );
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 24px 48px -12px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Interactive Landmark Chip Hover & Glow */
+.landmark-chip {
+  background: rgba(30, 41, 59, 0.55);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landmark-chip:hover {
+  background: rgba(14, 165, 233, 0.18);
+  border-color: rgba(56, 189, 248, 0.65);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.3);
+}
+
+.landmark-chip-active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(14, 165, 233, 0.25));
+  border-color: #34d399;
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Radar Pulse Ring for Live GPS Beacon */
+@keyframes radar-ping {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.animate-radar {
+  animation: radar-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Subtle Shimmer Sweep for Recommended Route Card */
+@keyframes route-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.route-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(52, 211, 153, 0.15),
+    transparent
+  );
+  animation: route-shimmer 3s infinite ease-in-out;
+}
