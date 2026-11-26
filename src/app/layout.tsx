@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./global.css";
 
 export const metadata: Metadata = {
-  title: "TerraCast 3D",
-  description: "3D Weather and Terrain Simulation",
+  title: "Waymark | Quiet city walks",
+  description: "Find quieter walking routes to places around your city.",
 };
 
 export default function RootLayout({
