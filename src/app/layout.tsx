@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import "./global.css";
 
 export const metadata: Metadata = {
   title: "TerraCast 3D",
