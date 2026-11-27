@@ -105,7 +105,7 @@ a:focus-visible {
   align-items: center;
   gap: 8px;
   color: #a4b1b1;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 650;
   letter-spacing: 0.07em;
 }
@@ -194,7 +194,7 @@ a:focus-visible {
   gap: 7px;
   margin: 0;
   color: #7d9992;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.14em;
 }
@@ -204,9 +204,9 @@ a:focus-visible {
 }
 
 .sidebar-intro h1 {
-  margin: 14px 0 8px;
+  margin: 16px 0 10px;
   color: #f0f5f2;
-  font-size: clamp(28px, 3vw, 34px);
+  font-size: clamp(30px, 3vw, 36px);
   font-weight: 650;
   letter-spacing: -0.065em;
   line-height: 1.08;
@@ -219,11 +219,11 @@ a:focus-visible {
 }
 
 .intro-copy {
-  max-width: 300px;
+  max-width: 310px;
   margin: 0;
   color: #91a1a1;
-  font-size: 11px;
-  line-height: 1.65;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 .start-section,
@@ -259,7 +259,7 @@ a:focus-visible {
 .section-heading h2 {
   margin: 0;
   color: #e7efeb;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 650;
   letter-spacing: -0.02em;
 }
@@ -310,8 +310,8 @@ a:focus-visible {
 .permission-note {
   margin: 8px 0 0;
   color: #718486;
-  font-size: 9px;
-  line-height: 1.5;
+  font-size: 10px;
+  line-height: 1.55;
 }
 
 .selected-origin,
@@ -409,7 +409,7 @@ a:focus-visible {
   border: 0;
   background: transparent;
   color: #899a9b;
-  font-size: 9px;
+  font-size: 10px;
   text-align: left;
   cursor: pointer;
 }
@@ -434,7 +434,7 @@ a:focus-visible {
 
 .input-label {
   margin-bottom: 7px;
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .search-input-wrap,
@@ -469,7 +469,7 @@ a:focus-visible {
   outline: 0;
   background: transparent;
   color: #ecf4f0;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .search-input-wrap input::placeholder,
@@ -624,7 +624,7 @@ a:focus-visible {
   border-radius: 7px;
   background: rgba(255, 255, 255, 0.025);
   color: #9eaeab;
-  font-size: 8px;
+  font-size: 9px;
   cursor: pointer;
   transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
 }
@@ -656,7 +656,7 @@ a:focus-visible {
   background: linear-gradient(110deg, #39a985, #298a70);
   box-shadow: 0 7px 22px rgba(25, 117, 91, 0.16);
   color: #f4fff9;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
   transition: filter 150ms ease, transform 150ms ease;
@@ -680,8 +680,8 @@ a:focus-visible {
 .status-message {
   margin: 8px 2px 0;
   color: #f3a5a0;
-  font-size: 9px;
-  line-height: 1.5;
+  font-size: 10px;
+  line-height: 1.55;
 }
 
 .status-message {
@@ -708,7 +708,7 @@ a:focus-visible {
 .route-results-heading h2 {
   margin: 0;
   color: #eaf1ed;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 650;
   letter-spacing: -0.035em;
 }
@@ -784,13 +784,13 @@ a:focus-visible {
 
 .route-option-title strong {
   color: #e5efea;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 650;
 }
 
 .route-option-note {
   color: #809193;
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .route-option-meta {
@@ -834,8 +834,8 @@ a:focus-visible {
   border: 1px dashed rgba(214, 233, 225, 0.11);
   border-radius: 9px;
   color: #819394;
-  font-size: 8px;
-  line-height: 1.55;
+  font-size: 9px;
+  line-height: 1.6;
 }
 
 .quietness-note {
@@ -863,21 +863,21 @@ a:focus-visible {
 .quietness-note p {
   margin: 1px 0 0;
   color: #829393;
-  font-size: 8px;
-  line-height: 1.5;
+  font-size: 9px;
+  line-height: 1.55;
 }
 
 .quietness-note strong {
   color: #bbd0c8;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 600;
 }
 
 .privacy-note {
   margin: 10px 1px 0;
   color: #627677;
-  font-size: 7px;
-  line-height: 1.55;
+  font-size: 8px;
+  line-height: 1.6;
 }
 
 .map-panel {

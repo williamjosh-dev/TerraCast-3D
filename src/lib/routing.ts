@@ -160,8 +160,8 @@ export async function calculateWalkingRoutes(
 
       return {
         id: `walk-${index}`,
-        name: index === 0 ? "Quieter-street preference" : "Alternative walk",
-        note: index === 0 ? "Street preference, not live traffic" : "Another pedestrian route",
+        name: index === 0 ? "Quieter streets" : "Another option",
+        note: index === 0 ? "Favours local streets; no live traffic data" : "A different way to walk",
         distanceMeters,
         durationSeconds,
         coordinates,

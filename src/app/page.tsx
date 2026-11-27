@@ -89,15 +89,15 @@ function formatDistance(meters: number): string {
 
 function getLocationError(error: GeolocationPositionError): string {
   if (error.code === error.PERMISSION_DENIED) {
-    return "Location permission was denied. You can choose a starting city instead.";
+    return "Location access is off. You can enter a city instead.";
   }
   if (error.code === error.POSITION_UNAVAILABLE) {
-    return "Your location could not be determined. Try choosing a city instead.";
+    return "We couldn't find your location. Try entering a city instead.";
   }
   if (error.code === error.TIMEOUT) {
-    return "Finding your location took too long. Please try again or choose a city.";
+    return "Finding your location took too long. Try again or enter a city.";
   }
-  return "Could not access your location. Please try again or choose a city.";
+  return "We couldn't access your location. Try again or enter a city.";
 }
 
 export default function Home() {
@@ -395,7 +395,7 @@ export default function Home() {
 
         <div className={`header-location${origin ? " is-set" : ""}`}>
           <span className="header-location-dot" />
-          <span>{origin ? "STARTING POINT" : "LOCATION NOT SET"}</span>
+          <span>{origin ? "STARTING NEAR" : "NO START SET"}</span>
           <span className="header-location-divider" />
           <MapPin size={13} />
           <span>{origin ? origin.label : "Choose where to start"}</span>
@@ -407,17 +407,17 @@ export default function Home() {
       <div className="planner-layout">
         <aside className="planner-sidebar">
           <div className="sidebar-intro">
-            <p className="overline"><Footprints size={13} /> A BETTER WAY THERE</p>
-            <h1>Find your way, <em>your way.</em></h1>
+            <p className="overline"><Footprints size={13} /> WALK AT YOUR OWN PACE</p>
+            <h1>A calmer way<br />to <em>get there.</em></h1>
             <p className="intro-copy">
-              A calmer walk to parks, shops, work, or anywhere around town.
+              Tell us where you’re starting and where you’re headed. We’ll find a walk that takes the quieter streets.
             </p>
           </div>
 
           <section className="start-section" aria-labelledby="start-title">
             <div className="section-heading">
               <span className="step-number">01</span>
-              <div><p className="field-label">STARTING POINT</p><h2 id="start-title">Where are you starting?</h2></div>
+              <div><p className="field-label">YOUR START</p><h2 id="start-title">Where should we start?</h2></div>
             </div>
 
             {origin ? (
@@ -425,7 +425,7 @@ export default function Home() {
                 <span className="selected-origin-icon"><MapPin size={16} /></span>
                 <span className="selected-origin-copy">
                   <strong>{origin.label}</strong>
-                  <small>{origin.source === "device" ? "Current location · not saved" : "Chosen starting city"}</small>
+                  <small>{origin.source === "device" ? "Your current location" : "Starting point"}</small>
                 </span>
                 <button
                   type="button"
@@ -453,7 +453,7 @@ export default function Home() {
                   <span>{isLocating ? "Finding your location…" : "Use my location"}</span>
                   {!isLocating && <ArrowRight size={16} className="button-arrow" />}
                 </button>
-                <p className="permission-note">Your browser asks first. Location is shared with the map and routing services to plan this walk; Waymark does not save it.</p>
+                <p className="permission-note">Your browser will ask first. We use your location to plan the walk; Waymark doesn’t store it.</p>
               </>
             )}
 
@@ -475,13 +475,13 @@ export default function Home() {
               }}
               aria-expanded={otherCityOpen}
             >
-              <span>{origin ? "Or start somewhere else" : "Planning from another city?"}</span>
-              <span>{otherCityOpen ? "Close" : "Enter a city"}</span>
+              <span>{origin ? "Want to start somewhere else?" : "Starting somewhere else?"}</span>
+              <span>{otherCityOpen ? "Hide" : "Enter a city"}</span>
             </button>
 
             {otherCityOpen && (
               <form className="city-search-form" onSubmit={handleCitySubmit}>
-                <label className="input-label" htmlFor="city-search">START IN A DIFFERENT CITY</label>
+                <label className="input-label" htmlFor="city-search">CITY OR ADDRESS</label>
                 <div className="search-input-wrap">
                   <MapPin size={15} />
                   <input
@@ -495,7 +495,7 @@ export default function Home() {
                       setCityQuery(event.target.value);
                       setSearchError("");
                     }}
-                    placeholder="Type a city or address"
+                    placeholder="Try a city, street, or address"
                     autoComplete="address-level2"
                   />
                   <button type="submit" disabled={isSearching}>
@@ -522,7 +522,7 @@ export default function Home() {
           <section className="destination-section" aria-labelledby="destination-title">
             <div className="section-heading">
               <span className="step-number">02</span>
-              <div><p className="field-label">DESTINATION</p><h2 id="destination-title">Where do you want to go?</h2></div>
+              <div><p className="field-label">YOUR DESTINATION</p><h2 id="destination-title">Where are you headed?</h2></div>
             </div>
 
             {destination ? (
@@ -569,8 +569,8 @@ export default function Home() {
                       setSearchError("");
                       setRouteError("");
                     }}
-                    placeholder="Search any place or address"
-                    aria-label="Search any place or address"
+                    placeholder="A place, address, or landmark"
+                    aria-label="Search for a place, address, or landmark"
                     autoComplete="off"
                   />
                   <button type="submit" disabled={isSearching}>
@@ -595,7 +595,7 @@ export default function Home() {
 
             {!destination && (
               <div className="quick-destinations">
-                <span className="quick-label">QUICK SEARCH</span>
+                <span className="quick-label">OR PICK A CATEGORY</span>
                 <div className="destination-chips">
                   {destinationTypes.map(({ label, value, Icon }) => (
                     <button className="destination-chip" key={label} type="button" onClick={() => handleCategoryClick(value)}>
@@ -614,7 +614,7 @@ export default function Home() {
             disabled={isCalculating || isLocating || isSearching}
           >
             {isCalculating ? <LoaderCircle size={16} className="spin" /> : <RouteIcon size={16} />}
-            <span>{isCalculating ? "Finding your walk…" : "Find a walking route"}</span>
+            <span>{isCalculating ? "Looking for routes…" : "Find walking routes"}</span>
             {!isCalculating && <ArrowRight size={16} className="button-arrow" />}
           </button>
 
@@ -626,7 +626,7 @@ export default function Home() {
             <div className="route-results-heading">
               <div>
                 <p className="overline results-overline">YOUR WALK</p>
-                <h2 id="route-results-title">{routes.length ? "Choose your route" : "Routes will show here"}</h2>
+                <h2 id="route-results-title">{routes.length ? "Pick the walk that suits you" : "Your route options will appear here"}</h2>
               </div>
               {routes.length > 0 && <span className="route-count">{routes.length} option{routes.length === 1 ? "" : "s"}</span>}
             </div>
@@ -648,7 +648,7 @@ export default function Home() {
                         {route.isFastest ? <Navigation size={16} /> : <TreePine size={17} />}
                       </span>
                       <span className="route-option-main">
-                        <span className="route-option-title"><strong>{route.name}</strong></span>
+                        <span className="route-option-title"><strong>{route.isFastest ? "Fastest walk" : route.name}</strong></span>
                         <span className="route-option-note">{route.note}</span>
                       </span>
                       <span className="route-option-meta">
@@ -662,14 +662,14 @@ export default function Home() {
               </div>
             ) : (
               <p className="routes-empty-copy">
-                Allow location or choose a city, then search for a place to get a real walking route.
+                Add a starting point and destination to see the available walking routes.
               </p>
             )}
           </section>
 
           <div className="quietness-note">
             <span className="quietness-icon"><ShieldCheck size={15} /></span>
-            <p><strong>Quieter streets are an estimate.</strong><br />No live traffic or crowd data is used.</p>
+            <p><strong>Quietness is our best estimate.</strong><br />We favour smaller streets, not live traffic or noise data.</p>
           </div>
 
           <p className="privacy-note">
@@ -688,7 +688,7 @@ export default function Home() {
           {origin && (
             <div className="map-place-badge">
               <span className="map-place-icon"><MapPin size={15} /></span>
-              <span><strong>{origin.label}</strong><small>{activeRoute ? `Walk to ${destination?.label ?? "destination"}` : "Starting area"}</small></span>
+              <span><strong>{origin.label}</strong><small>{activeRoute ? `Walking to ${destination?.label ?? "your destination"}` : "Your starting area"}</small></span>
             </div>
           )}
           {activeRoute && (
@@ -701,12 +701,12 @@ export default function Home() {
             </div>
           )}
           {isCalculating && (
-            <div className="map-loading"><LoaderCircle size={16} className="spin" /> Calculating a walking route…</div>
+            <div className="map-loading"><LoaderCircle size={16} className="spin" /> Finding your walking routes…</div>
           )}
           <div className="map-attribution-note">
             {mapTilerKey
               ? mapStyleError || "Imagery © Esri · Street labels © MapTiler · © OpenStreetMap contributors"
-              : "Imagery © Esri · Add NEXT_PUBLIC_MAPTILER_KEY for MapTiler street labels"}
+              : "Imagery © Esri · Street names may not be available"}
           </div>
         </section>
       </div>
