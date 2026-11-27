@@ -185,7 +185,7 @@ export default function Home() {
         [bounds.west, bounds.south],
         [bounds.east, bounds.north],
       ],
-      { padding: { top: 100, right: 90, bottom: 100, left: 90 }, maxZoom: 16, duration: 700 },
+      { padding: { top: 100, right: 90, bottom: 100, left: 90 }, maxZoom: 17, duration: 700 },
     );
   }, [activeRoute]);
 
@@ -730,7 +730,7 @@ export default function Home() {
               initialViewState={{
                 longitude: origin.longitude,
                 latitude: origin.latitude,
-                zoom: 14,
+                zoom: 15,
               }}
               mapStyle={mapStyle}
               style={{ width: "100%", height: "100%" }}
