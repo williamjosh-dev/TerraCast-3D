@@ -3,13 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
-import MapGL, {
-  Layer,
-  Marker,
-  NavigationControl,
-  Source,
-  type MapRef,
-} from "react-map-gl/maplibre";
 import type { StyleSpecification } from "maplibre-gl";
 import {
   ArrowRight,
@@ -35,6 +28,7 @@ import { searchNearbyPlaces } from "../lib/OverPass";
 import type { PlaceCategory } from "../lib/OverPass";
 import { calculateWalkingRoutes } from "../lib/routing";
 import type { WalkingRoute } from "../lib/routing";
+import CityMap from "../components/map/citymap";
 
 type SearchTarget = "origin" | "destination";
 
@@ -107,7 +101,6 @@ function getLocationError(error: GeolocationPositionError): string {
 }
 
 export default function Home() {
-  const mapRef = useRef<MapRef>(null);
   const placeSearchRequestId = useRef(0);
   const routeRequestId = useRef(0);
   const locationRequestId = useRef(0);
@@ -161,33 +154,6 @@ export default function Home() {
 
     return () => controller.abort();
   }, []);
-
-  useEffect(() => {
-    if (!activeRoute || !mapRef.current) return;
-
-    const bounds = activeRoute.coordinates.reduce(
-      (result, [longitude, latitude]) => ({
-        west: Math.min(result.west, longitude),
-        south: Math.min(result.south, latitude),
-        east: Math.max(result.east, longitude),
-        north: Math.max(result.north, latitude),
-      }),
-      {
-        west: Number.POSITIVE_INFINITY,
-        south: Number.POSITIVE_INFINITY,
-        east: Number.NEGATIVE_INFINITY,
-        north: Number.NEGATIVE_INFINITY,
-      },
-    );
-
-    mapRef.current.fitBounds(
-      [
-        [bounds.west, bounds.south],
-        [bounds.east, bounds.north],
-      ],
-      { padding: { top: 100, right: 90, bottom: 100, left: 90 }, maxZoom: 17, duration: 700 },
-    );
-  }, [activeRoute]);
 
   function handleUseLocation() {
     const requestId = ++locationRequestId.current;
@@ -417,17 +383,6 @@ export default function Home() {
     }
     void searchForPlace("destination", destinationQuery);
   }
-
-  const activeRouteFeature = activeRoute
-    ? {
-        type: "Feature" as const,
-        properties: {},
-        geometry: {
-          type: "LineString" as const,
-          coordinates: activeRoute.coordinates,
-        },
-      }
-    : null;
 
   return (
     <main className="waymark-app">
@@ -723,54 +678,12 @@ export default function Home() {
         </aside>
 
         <section className={`map-panel${origin ? " has-origin" : ""}`} aria-label="Walking route map">
-          {origin ? (
-            <MapGL
-              key={`${origin.latitude}:${origin.longitude}`}
-              ref={mapRef}
-              initialViewState={{
-                longitude: origin.longitude,
-                latitude: origin.latitude,
-                zoom: 15,
-              }}
-              mapStyle={mapStyle}
-              style={{ width: "100%", height: "100%" }}
-              cooperativeGestures
-            >
-              <NavigationControl position="top-right" showCompass={false} />
-              {activeRouteFeature && (
-                <Source id="walking-route" type="geojson" data={activeRouteFeature}>
-                  <Layer
-                    id="walking-route-line"
-                    type="line"
-                    layout={{ "line-cap": "round", "line-join": "round" }}
-                    paint={{
-                      "line-color": "#16866e",
-                      "line-width": 6,
-                      "line-opacity": 0.9,
-                    }}
-                  />
-                </Source>
-              )}
-              <Marker longitude={origin.longitude} latitude={origin.latitude} anchor="center">
-                <span className="map-origin-marker" aria-label="Starting point"><span /></span>
-              </Marker>
-              {destination && (
-                <Marker longitude={destination.longitude} latitude={destination.latitude} anchor="bottom">
-                  <span className="map-destination-marker" aria-label="Destination"><MapPin size={23} fill="currentColor" /></span>
-                </Marker>
-              )}
-            </MapGL>
-          ) : (
-            <div className="map-empty">
-              <div className="map-empty-pattern" />
-              <div className="map-empty-card">
-                <span className="map-empty-icon"><LocateFixed size={21} /></span>
-                <p className="map-empty-overline">YOUR WALK STARTS HERE</p>
-                <h2>Choose a starting point</h2>
-                <p>Use your current location or choose a city to see its real streets and walking routes.</p>
-              </div>
-            </div>
-          )}
+          <CityMap
+            origin={origin}
+            destination={destination}
+            route={activeRoute}
+            mapStyle={mapStyle}
+          />
 
           {origin && (
             <div className="map-place-badge">
