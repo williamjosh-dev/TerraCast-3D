@@ -26,7 +26,7 @@ import { reverseGeocode, searchPlaces } from "../lib/places";
 import type { Coordinates, PlaceResult } from "../lib/places";
 import { searchNearbyPlaces } from "../lib/OverPass";
 import type { PlaceCategory } from "../lib/OverPass";
-import { calculateWalkingRoutes } from "../lib/routing";
+import { calculateWalkingRoutes, formatWalkDuration } from "../lib/routing";
 import type { WalkingRoute } from "../lib/routing";
 import CityMap from "../components/map/citymap";
 
@@ -75,11 +75,6 @@ const destinationTypes = [
 
 function getPlaceLabel(place: PlaceResult): string {
   return place.name || place.description.split(",").slice(0, 2).join(", ");
-}
-
-function formatDuration(seconds: number): string {
-  const minutes = Math.max(1, Math.round(seconds / 60));
-  return `${minutes} min`;
 }
 
 function formatDistance(meters: number): string {
@@ -648,11 +643,11 @@ export default function Home() {
                         {route.isFastest ? <Navigation size={16} /> : <TreePine size={17} />}
                       </span>
                       <span className="route-option-main">
-                        <span className="route-option-title"><strong>{route.isFastest ? "Fastest walk" : route.name}</strong></span>
+                        <span className="route-option-title"><strong>{route.name}</strong></span>
                         <span className="route-option-note">{route.note}</span>
                       </span>
                       <span className="route-option-meta">
-                        <strong>{formatDuration(route.durationSeconds)}</strong>
+                        <strong>{formatWalkDuration(route.durationSeconds)}</strong>
                         <span>{formatDistance(route.distanceMeters)}</span>
                       </span>
                       <span className="route-selected-check">{isSelected && <Check size={12} />}</span>
@@ -669,7 +664,14 @@ export default function Home() {
 
           <div className="quietness-note">
             <span className="quietness-icon"><ShieldCheck size={15} /></span>
-            <p><strong>Quietness is our best estimate.</strong><br />We favour smaller streets, not live traffic or noise data.</p>
+            <p>
+              <strong>Quieter streets are an estimate.</strong><br />
+              {routes.some((route) => route.quietEstimateUnavailable)
+                ? "We couldn't check the local-street option; live traffic isn't available."
+                : routes.some((route) => route.id === "walk-quieter")
+                  ? "It prefers OpenStreetMap living streets, not live traffic or noise data."
+                  : "No distinct living-street route showed up; live traffic isn't available."}
+            </p>
           </div>
 
           <p className="privacy-note">
@@ -694,7 +696,7 @@ export default function Home() {
           {activeRoute && (
             <div className="map-route-badge">
               <Clock3 size={15} />
-              <strong>{formatDuration(activeRoute.durationSeconds)}</strong>
+              <strong>{formatWalkDuration(activeRoute.durationSeconds)}</strong>
               <span>·</span>
               <span>{formatDistance(activeRoute.distanceMeters)}</span>
               {activeRoute.isFastest && <span className="map-fastest-tag">FASTEST</span>}
