@@ -31,8 +31,8 @@ import {
 } from "lucide-react";
 import { reverseGeocode, searchPlaces } from "../lib/places";
 import type { Coordinates, PlaceResult } from "../lib/places";
-import { searchNearbyPlaces } from "../lib/overpass";
-import type { PlaceCategory } from "../lib/overpass";
+import { searchNearbyPlaces } from "../lib/OverPass";
+import type { PlaceCategory } from "../lib/OverPass";
 import { calculateWalkingRoutes } from "../lib/routing";
 import type { WalkingRoute } from "../lib/routing";
 
