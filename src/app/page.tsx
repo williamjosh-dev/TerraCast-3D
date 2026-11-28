@@ -73,6 +73,29 @@ const destinationTypes = [
   { label: "Work", value: "office", Icon: BriefcaseBusiness },
 ] as const satisfies readonly { label: string; value: PlaceCategory; Icon: typeof TreePine }[];
 
+const destinationCategoryAliases: Record<PlaceCategory, string[]> = {
+  park: ["park", "parks", "garden", "gardens"],
+  shop: ["shop", "shops", "store", "stores", "shopping"],
+  cafe: ["cafe", "cafes", "coffee", "coffee shop", "coffee shops"],
+  office: ["work", "office", "offices", "workplace", "workplaces"],
+};
+
+function getDestinationCategory(query: string): PlaceCategory | null {
+  const normalizedQuery = query
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\b(nearby|near me|around me|close to me|closest|nearest)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return (
+    (Object.entries(destinationCategoryAliases) as [PlaceCategory, string[]][])
+      .find(([, aliases]) => aliases.includes(normalizedQuery))?.[0] ?? null
+  );
+}
+
 function getPlaceLabel(place: PlaceResult): string {
   return place.name || place.description.split(",").slice(0, 2).join(", ");
 }
@@ -347,7 +370,16 @@ export default function Home() {
 
   function handleDestinationSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    void searchForPlace("destination", destinationQuery);
+    searchDestination(destinationQuery);
+  }
+
+  function searchDestination(query: string) {
+    const category = getDestinationCategory(query);
+    if (category) {
+      void searchNearbyCategory(category);
+      return;
+    }
+    void searchForPlace("destination", query);
   }
 
   function handleCitySubmit(event: FormEvent<HTMLFormElement>) {
@@ -376,7 +408,7 @@ export default function Home() {
       void calculateRoute(origin, destination);
       return;
     }
-    void searchForPlace("destination", destinationQuery);
+    searchDestination(destinationQuery);
   }
 
   return (
@@ -564,7 +596,7 @@ export default function Home() {
                       setSearchError("");
                       setRouteError("");
                     }}
-                    placeholder="A place, address, or landmark"
+                    placeholder="Search a place, or try parks, shops, coffee, or work"
                     aria-label="Search for a place, address, or landmark"
                     autoComplete="off"
                   />
