@@ -312,14 +312,22 @@ export async function calculateWalkingRoutes(
       };
     }
 
+    const alternativeName =
+      distanceDifference > 0
+        ? "A longer way there"
+        : distanceDifference < 0
+          ? "A slower, shorter walk"
+          : "A different way there";
     const distanceNote =
       distanceDifference > 0
-        ? `${formattedDistanceDifference} further than the fastest`
-        : `${formattedDistanceDifference} less walking than the fastest`;
+        ? `${timeDifference} · ${formattedDistanceDifference} farther than the fastest`
+        : distanceDifference < 0
+          ? `${timeDifference} · saves ${formattedDistanceDifference} of walking`
+          : `${timeDifference} · about the same distance`;
 
     return {
       ...route,
-      name: `${timeDifference}${hasMatchingAlternative ? ` · route ${alternativeIndex + 1}` : ""}`,
+      name: `${alternativeName}${hasMatchingAlternative ? ` · route ${alternativeIndex + 1}` : ""}`,
       note: distanceNote,
       isFastest,
       quietEstimateUnavailable,
